@@ -1,5 +1,7 @@
 # AEROS — Autonomous Engineering & Reasoning for Orbital Systems
 
+[![CI](https://github.com/JISSAL-GIGI/aeros/actions/workflows/ci.yml/badge.svg)](https://github.com/JISSAL-GIGI/aeros/actions/workflows/ci.yml)
+
 **An autonomous launch-vehicle design engine whose physics is validated against rockets that actually flew.**
 
 Give AEROS a mission — *"5 tonnes to 500 km"* — and it designs a complete multistage launch vehicle: engine selection, staging, propellant loads, tank structure, and dimensions. Then it **proves the design works** by flying it in a 3-DOF trajectory simulator, and it shows you every engineering decision it made, with the reasoning.
