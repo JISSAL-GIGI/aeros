@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aeros-engine"
+version = "0.1.0"
+description = "AEROS: autonomous launch vehicle design engine, validated against Falcon 9, Electron and Saturn V"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Jissal Gigi" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Programming Language :: Python :: 3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+aeros = "aeros.cli:main"
+
+[project.urls]
+Repository = "https://github.com/JISSAL-GIGI/aeros"
+
+[tool.setuptools]
+packages = ["aeros"]

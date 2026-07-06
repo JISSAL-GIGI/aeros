@@ -1,0 +1,20 @@
+[
+ {
+  "vehicle": "Falcon 9 Block 5 (expendable)",
+  "published_kg": 22800,
+  "predicted_kg": 24950,
+  "error_pct": 9.4
+ },
+ {
+  "vehicle": "Electron",
+  "published_kg": 300,
+  "predicted_kg": 333,
+  "error_pct": 11.0
+ },
+ {
+  "vehicle": "Saturn V (Skylab, 2-stage)",
+  "published_kg": 77100,
+  "predicted_kg": 127200,
+  "error_pct": null
+ }
+]
