@@ -1,6 +1,7 @@
 """Command-line interface.
 
     aeros design "5000 kg to 500 km" --out results/
+    aeros cad "5000 kg to 500 km" --out cad_out/
     aeros validate
 """
 
@@ -89,6 +90,30 @@ def cmd_validate(args):
         Path(args.json).write_text(json.dumps(rows, indent=1))
 
 
+def cmd_cad(args):
+    from .cad import export_vehicle_cad
+    from .design import MissionSpec, design_vehicle
+
+    payload, alt = parse_mission(args.mission)
+    mission = MissionSpec(args.mission, payload_kg=payload,
+                          target_altitude_m=alt,
+                          launch_latitude_deg=args.latitude)
+    result = design_vehicle(mission, verify=args.verify)
+    files = export_vehicle_cad(
+        result.vehicle,
+        args.out,
+        mission=mission,
+        decisions=result.decisions,
+        alternatives=result.alternatives,
+        segments=args.segments,
+        prefix=args.prefix,
+    )
+    print(result.vehicle.describe())
+    print("\nCAD export:")
+    for kind, path in files.items():
+        print(f"  {kind}: {path}")
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="aeros",
                                 description="AEROS launch vehicle design")
@@ -103,6 +128,16 @@ def main(argv=None):
                             "(takes tens of minutes)")
     v.add_argument("--json", default=None)
     v.set_defaults(func=cmd_validate)
+    c = sub.add_parser("cad",
+                       help="design a vehicle and export concept CAD files")
+    c.add_argument("mission", help="'5000 kg to 500 km'")
+    c.add_argument("--latitude", type=float, default=28.5)
+    c.add_argument("--out", default="aeros_cad")
+    c.add_argument("--segments", type=int, default=64)
+    c.add_argument("--prefix", default="vehicle")
+    c.add_argument("--verify", action="store_true",
+                   help="run trajectory verification before CAD export")
+    c.set_defaults(func=cmd_cad)
     args = p.parse_args(argv)
     args.func(args)
 

@@ -5,5 +5,11 @@ build/
 dist/
 .pytest_cache/
 aeros_out/
+aeros_cad/
+cad_out/
 demo_out/
+my_cad/
+review_demo/
+review_falcon9/
+_cad_smoke/
 .venv/

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aeros-engine"
-version = "0.1.0"
-description = "AEROS: autonomous launch vehicle design engine, validated against Falcon 9, Electron and Saturn V"
+version = "0.1.1"
+description = "AEROS: autonomous launch vehicle design engine with validated physics and traceable concept CAD"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "Jissal Gigi" }]

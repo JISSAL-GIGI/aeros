@@ -29,6 +29,22 @@ DECISIONS:
   ...
 ```
 
+And now the same design can be exported as concept CAD:
+
+```
+$ aeros cad "5000 kg to 500 km" --out cad_out/
+
+CAD export:
+  obj: cad_out/vehicle.obj
+  stl: cad_out/vehicle.stl
+  scad: cad_out/vehicle.scad
+  manifest: cad_out/vehicle_manifest.json
+  review_png: cad_out/vehicle_cad_review.png
+  review_json: cad_out/vehicle_cad_review.json
+```
+
+![CAD visual review](docs/gallery/cad_review_falcon9.png)
+
 ![Design verification sheet](docs/gallery/design_sheet_5t_500km.png)
 
 ## The validation is the point
@@ -58,8 +74,10 @@ Reproduce it yourself: `aeros validate` (takes a while — it re-optimizes ascen
 - **`aeros/trajectory.py`** — 3-DOF ascent dynamics with adaptive RK45: air-relative aerodynamics over a rotating Earth, Mach-dependent drag, q·α structural steering envelope, automatic max-q throttle bucket, two-burn orbital insertion, differential-evolution steering optimization, payload capacity by bisection.
 - **`aeros/structures.py`** — stage dry-mass buildup: hoop-stress-sized tank shells, engine and thrust-structure masses, calibrated to reproduce four flown stage masses within ±10% (unit-tested).
 - **`aeros/design.py`** — the autonomous designer: enumerates engine architectures, sizes each to mass closure, optimizes staging and diameter for minimum GLOW, verifies the winner by simulation, and logs every decision with its rationale.
+- **`aeros/cad.py`** — concept CAD generation: OBJ/STL/OpenSCAD export, explicit thrust/stage/payload interface markers, corrected clustered engine layouts, a JSON engineering manifest, and rendered CAD review sheets with automated geometry checks.
 - **`aeros/validate.py`** — the reference vehicles and the validation harness.
 - **`aeros/plots.py`** — vehicle drawings, ascent profiles, and one-page design verification sheets (matplotlib only).
+- **`docs/space_problem_intelligence_2026.md`** — official NASA/ESA problem-intelligence note explaining why CAD + structured design data is the next AEROS layer.
 
 ## Quickstart
 
@@ -67,12 +85,13 @@ Reproduce it yourself: `aeros validate` (takes a while — it re-optimizes ascen
 git clone https://github.com/JISSAL-GIGI/aeros
 cd aeros
 pip install -e .[dev]
-pytest tests/ -q          # 28 tests, <1 s
+pytest tests/ -q
 python examples/design_demo.py
+aeros cad "1500 kg to 400 km" --out my_cad/
 aeros design "1500 kg to 400 km" --out my_design/
 ```
 
-Requires Python ≥ 3.10, numpy, scipy, matplotlib. No GPU, no CAD kernel, no external simulation software.
+Requires Python ≥ 3.10, numpy, scipy, matplotlib. No GPU, no CAD kernel, no external simulation software. The first CAD layer writes OBJ/STL/OpenSCAD directly from Python and emits a review PNG plus JSON checks for stack continuity, engine clearance, interface markers, and fairing placement.
 
 ## What this is not (yet)
 
@@ -80,6 +99,7 @@ We are explicit about scope, because trust requires it:
 
 - **3-DOF, planar, spherical Earth.** No 6-DOF attitude dynamics, no winds, no dispersions, no J2. Adequate for conceptual capacity studies (as the validation shows), not for mission design.
 - **Conceptual-level structures.** Mass-estimating relationships calibrated on flown stages — not FEA. The ±10–15% structural accuracy bounds the design fidelity.
+- **Concept CAD, not production CAD.** The CAD exporter creates inspectable stage/fairing/engine/interface geometry, a structured manifest, and visual review artifacts; it is not yet a watertight, tolerance-controlled, fabrication-ready STEP assembly.
 - **Expendable two-stage designs.** Reusability penalties, boost-back budgets, parallel staging (boosters), and 3+ stage optimization are on the roadmap.
 - **No costing.** GLOW is the current objective; cost models are deliberately excluded until they can be sourced credibly.
 - **Published-data uncertainty.** Reference stage masses carry real uncertainty (SpaceX does not publish exact dry masses); the validation errors should be read with that in mind.
@@ -90,8 +110,9 @@ AEROS is the first published layer of a larger effort — an autonomous engineer
 
 1. **Multi-objective design** — Pareto fronts over GLOW / cost / reliability instead of single-objective GLOW.
 2. **Higher-fidelity verification loop** — 6-DOF trajectory, load cases, and automated FEA hand-off for the structures the conceptual sizer proposes.
-3. **Parallel staging and reusability** — boosters, propulsive recovery budgets.
-4. **Knowledge layer** — requirements parsing and design-rule extraction from the open engineering literature, feeding the same verified physics core.
+3. **CAD interface intelligence** — explicit attachment points, load paths, standard interfaces, manufacturing constraints, and optional STEP export through a CAD kernel.
+4. **Parallel staging and reusability** — boosters, propulsive recovery budgets.
+5. **Knowledge layer** — requirements parsing and design-rule extraction from the open engineering literature, feeding the same verified physics core.
 
 ## License
 
