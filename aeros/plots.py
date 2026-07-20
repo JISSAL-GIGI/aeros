@@ -75,8 +75,10 @@ def draw_vehicle(vehicle: Vehicle, ax=None, annotate=True):
     ax.fill_between(xs, y, nose, facecolor="#C4C4C4", edgecolor="k", lw=1.2)
     if annotate and vehicle.payload_kg:
         ax.annotate(f"payload\n{vehicle.payload_kg/1000:.2f} t",
-                    xy=(0, y + fairing_len * 0.4), fontsize=8,
-                    ha="center", va="center")
+                    xy=(dia_max * 0.18, y + fairing_len * 0.45),
+                    xytext=(dia_max * 0.9, y + fairing_len * 0.55),
+                    fontsize=8, va="center",
+                    arrowprops=dict(arrowstyle="-", lw=0.7))
 
     ax.set_xlim(-dia_max * 2.2, dia_max * 3.2)
     ax.set_ylim(-dia_max * 0.6, (y + fairing_len) * 1.04)
