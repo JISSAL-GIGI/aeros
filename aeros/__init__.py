@@ -14,3 +14,4 @@ from .atmosphere import atmosphere
 from .trajectory import simulate_ascent, payload_capacity
 
 from .design import MissionSpec, design_vehicle
+from .cad import build_vehicle_cad, export_vehicle_cad

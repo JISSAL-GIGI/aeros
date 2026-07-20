@@ -93,6 +93,20 @@ aeros design "1500 kg to 400 km" --out my_design/
 
 Requires Python ≥ 3.10, numpy, scipy, matplotlib. No GPU, no CAD kernel, no external simulation software. The first CAD layer writes OBJ/STL/OpenSCAD directly from Python and emits a review PNG plus JSON checks for stack continuity, engine clearance, interface markers, and fairing placement.
 
+## Uncertainty, cost, and speed (v0.2)
+
+Three capabilities from the AEROS gap analysis are now built in:
+
+**Uncertainty-aware design** (`aeros/uncertainty.py`) — Monte Carlo propagation of concept-level input uncertainty (stage dry mass ±7%, Isp ±0.7%, drag ±10%, residuals 0.3–1%) through the flight-validated simulator. Instead of one payload number you get P(orbit) vs payload, and `chance_constrained_design` resizes vehicles until they reach orbit at a stated confidence. For Falcon 9, the 95%-confidence capacity (20.1 t) and the deterministic capacity (24.95 t) bracket the operator's published rating (22.8 t) — quantitative evidence that published ratings embed uncertainty margin.
+
+![UQ curve](docs/gallery/uq_curve_falcon9.png)
+
+**Cost as an objective** (`aeros/cost.py`) — TRANSCOST-class first-unit CERs (stage dry mass and engine power laws, engine-cluster learning curve, commercial-practice factor). The GLOW-vs-cost trade across all sized architectures shows the mass-optimal vehicle is not the cost-optimal one:
+
+![Cost trade](docs/gallery/cost_glow_tradeoff.png)
+
+**Fast mode** (`aeros/fastopt.py`) — warm-started steering refinement with a short-global-solve fallback. Measured on Electron: capacity 328 kg vs 333 kg for the full differential-evolution search (−1.5%) at ~4× less wall time; successful warm steps cost ~2 s vs 25–50 s for a global solve.
+
 ## What this is not (yet)
 
 We are explicit about scope, because trust requires it:
